@@ -58,7 +58,7 @@ and each line is in the form of:
 Then you call the following for preprocessing:
 `python3 preprocessing.py <graph_name> <edge_file> <sep[tab|comma|space]> <has_headers> <buffer_size> [node_file]`
 
-where the <edge_file> and [node_file] should be the **absolute file path**, <sep> specifies the separator in csv files(we support tab, comma or space separators), <has_headers> specifies if there exist headers in csv files, <buffer_size> is the number of lines to read form csv files each time.
+where the <edge_file> and [node_file] should be the **absolute file path**, <sep> specifies the separator in csv files(we support tab, comma or space separators), <has_headers> specifies if there exist headers in csv files, <buffer_size> is the number of lines to read from csv files each time.
 
 For example, we can parse the unlabelled sample graph data in csv/unlabelled/ via
 `python3 preprocessing.py sampleUnlabelled /your-current-dir/csv/unlabelled/sample.csv comma false 100`
@@ -90,12 +90,10 @@ There are two steps of preprocessing, graph_part and tri_part, introduced as fol
 After the preprocessing, we can call hash graph partition utility as:
 `python3 graph_part.py <edge_file> <graph_name> <part_prefix> <sep> <buffer_size> <reorder> <has_headers> [node_file] [label_type]`
 
-where the <reorder> specifies if we reorder the node ids by their degree, we set this option by default to be true in our experiments, and the <part_prefix> can be specified with any easy-remembered name. We tend to use
-h[$number_machines]w[$number_workers] as the $part_prefix.
+where the $reorder specifies if we reorder the node ids by their degree, we set this option by default to be true in our experiments, and the <part_prefix> can be specified with any easy-remembered name. We tend to use h[$number_machines]w[$number_workers] as the $part_prefix.
 
 For example, if you have 10 machines, and each runs 3 workers, and you specify $part_prefix as h10w3.
-After <graph_part>, you should see that there are 10 partitions, each named h10w3 in the corresponding folders in each machine,
-that will be jointly accessed by all three workers in that machine.
+After <graph_part>, you should see that there are 10 partitions, each named h10w3 in the corresponding folders in each machine, that will be jointly accessed by all three workers in that machine.
 
 #### tri_part
 CliqueJoin(BinaryJoin using triangle indexing) relies on triangle partition, and <tri_part> does the job via:
@@ -188,7 +186,7 @@ localhost:18888
 conf/params.ini.
 ```
 [DEFAULT]
-workdir=/you/dir/to/workdir
+workdir=/your/dir/to/workdir
 number_workers=3
 number_machines=1
 ```
@@ -197,7 +195,7 @@ conf/graph_conf.json.
 ```
 {
   "storage":{
-    "workdir": "/you/dir/to/workdir",
+    "workdir": "/your/dir/to/workdir",
     "persist_data": "sampleUnlabelled",
     "temp_data": "temp"
   },
@@ -212,7 +210,7 @@ conf/graph_conf.json.
 If you want to run unlabelled query q5 using BinaryJoin algorithm with triangle indexing, compression and batching (for example, set batches to 128), just call:
 `python3 patmat.py BinaryJoin q5 false plans/BinaryJoin/unlabelled/q5_plan.json conf/graph_conf.json true true 128`
 
-The result of unlabelled q5 in unlabelled sample graph (data/sampleUnlabelled) should be 121809.
+The result of unlabelled q5 in unlabelled sample graph (data/sampleUnlabelled) should be 32679.
 
 ### Sample Graph Ground Truth
 
